@@ -1,0 +1,47 @@
+Enable
+Config t
+Host RT-02
+Enable secret TempleWater-123#
+security password min-length 8
+login block-for 180 attempts 3 within 60
+Banner Motd "ACESSO APENAS PARA O DEPTO. DE TI DA WATER TEMPLE LTDA."
+Username linkdoti privilege 15 secret hey-listen-3*
+IP Domain-name watertemple.local
+Crypto Key generate rsa general-key modulus 1024
+Line vty 0 15
+Transport input ssh
+login local
+exit
+line console 0
+Login local
+Exit
+Service password-encryption
+int g0/0
+no shutdown
+int g0/0.10
+encapsulation dot1q 10
+ip add 172.16.1.1 255.255.255.224
+ipv6 add 2001:db8:1:10::1/64
+ipv6 add fe80::1 link-local
+ip helper-address 172.16.1.50
+int g0/0.20
+encapsulation dot1q 20
+ip add 172.16.1.33 255.255.255.240
+ipv6 add 2001:db8:1:20::1/64
+ipv6 add fe80::1 link-local
+ip helper-address 172.16.1.50
+int g0/0.30
+encapsulation dot1q 30
+ip add 172.16.1.49 255.255.255.248
+ipv6 add 2001:db8:1:30::1/64
+ipv6 add fe80::1 link-local
+int g0/1 
+shutdown
+int s0/0/0
+ip add 189.100.0.2 255.255.255.252
+ipv6 add 2001:DB8:FACA::2/64
+no shutdown
+exit
+ip route 0.0.0.0 0.0.0.0 189.100.0.1
+ipv6 route ::/0 2001:Db8:faca::1
+do wr

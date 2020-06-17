@@ -1,0 +1,51 @@
+Enable
+Config t
+Host SW-01
+Enable secret TempleWater-123#
+Banner Motd "ACESSO APENAS PARA O DEPTO. DE TI DA WATER
+TEMPLE LTDA."
+Username linkdoti privilege 15 secret hey-listen-3*
+IP Domain-name watertemple.local
+Crypto Key generate rsa general-key modulus 1024
+Line vty 0 15
+Transport input ssh
+login local
+exit
+line console 0
+Login local
+Exit
+Service password-encryption
+VLAN 10
+NAME ADMINISTRACAO
+VLAN 20
+NAME RH
+VLAN 30
+NAME TI
+VLAN 40
+NAME SERVIDORES 
+VLAN 50
+NAME WI-FI
+int f0/01
+switchport mode access
+switchport access vlan 10
+int f0/02
+switchport mode access
+switchport access vlan 20
+int f0/03
+switchport mode access
+switchport access vlan 30
+int f0/23
+switchport mode access
+switchport access vlan 50
+int f0/24
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,40,50,99
+exit
+int vlan 30
+ip add 172.16.0.109 255.255.255.240
+int range f0/4-22
+shutdown
+int range g0/1-2
+shutdown
+do wr
